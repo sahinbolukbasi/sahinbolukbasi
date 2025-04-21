@@ -89,8 +89,8 @@
     <img src="https://img.shields.io/static/v1?message=Stackoverflow&logo=stackoverflow&label=&color=FE7A16&logoColor=white&labelColor=&style=for-the-badge" height="35" alt="stackoverflow logo"  />
   </a>
   <a href="https://twitter.com/shnblkbs" target="_blank">
-    <img src="https://img.shields.io/static/v1?message=Twitter&logo=twitter&label=&color=1DA1F2&logoColor=white&labelColor=&style=for-the-badge" height="35" alt="twitter logo"  />
-  </a>
+   <p style="width:100px; height:20px ;padding: 10px; color: white; background-color: black; text-align:center; font-size:20px;"> X</p>
+
 </div>
 
 ###
