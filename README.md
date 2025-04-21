@@ -88,9 +88,20 @@
   <a href="https://stackoverflow.com/users/13609713/%c5%9eahin-b%c3%b6l%c3%bckba%c5%9f%c4%b1" target="_blank">
     <img src="https://img.shields.io/static/v1?message=Stackoverflow&logo=stackoverflow&label=&color=FE7A16&logoColor=white&labelColor=&style=for-the-badge" height="35" alt="stackoverflow logo"  />
   </a>
-  <a href="https://twitter.com/shnblkbs" target="_blank">
-   <p style="width:100px; height:20px ;padding: 10px; color: white; background-color: black; text-align:center; font-size:20px;"> X</p>
-
+<a href="https://twitter.com/shnblkbs" 
+   style="display: inline-block; 
+          width: 130px; 
+          height: 30px; 
+          padding: 10px; 
+          color: white; 
+          background-color: black; 
+          text-align: center; 
+          font-size: 30px; 
+          text-decoration: none; 
+          line-height: 20px; " 
+   target="_blank">
+  X
+</a>
 </div>
 
 ###
