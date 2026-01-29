@@ -1,7 +1,8 @@
 <h2 align="center">Hi there, I'm Şahin BÖLÜKBAŞI 👋</h2>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/sahinbolukbasi/sahinbolukbasi/output/snake.svg" alt="Snake animation" width="800" />
+  <img src="https://raw.githubusercontent.com/sahinbolukbasi/sahinbolukbasi/output/snake.svg" alt="Snake animation" width="8
+    1200" />
 </p>
 
 ### 👨‍💻 About Me
@@ -19,20 +20,13 @@ I am a **Software Developer & DevOps Specialist** at **Pargesoft**, bridging the
 
 <p align="left">
   <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=cs,dotnet,azure,docker,kubernetes,py,js,django,postgresql,linux,git,github,vscode,selenium,raspberrypi&perline=8" />
+    <img src="https://skillicons.dev/icons?i=cs,dotnet,azure,docker,kubernetes,py,js,flask,postgresql,linux,git,github,vscode,selenium,raspberrypi&perline=8" />
   </a>
 </p>
 
 ---
 
 ### 📊 GitHub Analysis & Stats
-
-<div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=sahinbolukbasi&show_icons=true&include_all_commits=true&count_private=true&theme=dark&hide_border=false" width="48%" alt="stats graph" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs?username=sahinbolukbasi&layout=compact&langs_count=6&theme=dark&hide_border=false" width="41.5%" alt="languages graph" />
-</div>
-
-<br/>
 
 <div align="center">
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=sahinbolukbasi&theme=dracula&area=true&hide_border=false" width="90%" alt="activity graph" />
