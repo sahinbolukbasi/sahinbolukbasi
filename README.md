@@ -6,11 +6,12 @@
 
 ### 👨‍💻 About Me
 
-I am a **Software Developer & DevOps Specialist** at **Pargesoft**, bridging the gap between development and operations within the Microsoft ecosystem.
+I am a **Software Developer & DevOps Specialist** at **Pargesoft**, with a multi-disciplinary background in building enterprise-grade applications and automating complex infrastructures.
 
-* 🚀 Currently scaling the **Bulut İK (Cloud HR)** project.
-* ⚙️ Specialized in **Azure DevOps**, CI/CD for Business Central (AL), and Cloud Infrastructure.
-* 🤖 Deeply interested in **Enterprise RAG systems** and LLM architectures.
+* 🚀 **Full-Stack .NET Development:** Expert in developing professional **Desktop (WPF/WinForms)** and **Web (ASP.NET Core MVC)** applications. I design and implement scalable **RESTful APIs** and maintain high-performance backend systems.
+* ⚙️ **DevOps & Cloud:** Specialized in **Azure DevOps**, architecting CI/CD pipelines for **Business Central (AL)**, and managing cloud infrastructure through Docker and containerization.
+* 🐍 **Python & AI Engineering:** Proficient **Python Developer** focusing on Artificial Intelligence. I build and integrate **Enterprise RAG (Retrieval-Augmented Generation)** systems and leverage **LLM architectures** to solve real-world business problems.
+* 🛠️ **Project Spotlight:** Currently scaling the **Bulut İK (Cloud HR)** project, ensuring high availability and seamless deployment.
 * ✍️ Sharing technical insights on [Medium](https://medium.com/@sahinbolukbasii).
 
 ---
