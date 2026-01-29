@@ -43,6 +43,24 @@ I am a **Software Developer & DevOps Specialist** at **Pargesoft**, with a multi
 
 ### 🌐 Connect & Socials
 
+<h3 align="left">🧮 Algorithms & Data Structures</h3>
+
+<div align="left">
+  <p>Passionate about solving complex algorithmic challenges and optimizing code performance. Experienced in implementing efficient data structures and algorithms for real-world applications.</p>
+  
+  <b>Key Areas:</b>
+  <ul>
+    <li>📊 Data Structures: Arrays, Linked Lists, Trees, Graphs, Hash Tables, Heaps</li>
+    <li>🔍 Search & Sort Algorithms: Binary Search, Quick Sort, Merge Sort, Heap Sort</li>
+    <li>🌲 Tree Algorithms: Binary Search Trees, AVL Trees, Tree Traversals</li>
+    <li>🔗 Graph Algorithms: DFS, BFS, Dijkstra's, Minimum Spanning Trees</li>
+    <li>⚡ Dynamic Programming & Greedy Algorithms</li>
+    <li>🔢 Mathematical Algorithms: Number Theory, Combinatorics</li>
+  </ul>
+</div>
+
+###
+
 <div align="left">
   <a href="https://linkedin.com/in/şahin-bölükbaşı-b7377a171" target="_blank">
     <img src="https://img.shields.io/static/v1?message=LinkedIn&logo=linkedin&label=&color=0077B5&logoColor=white&style=for-the-badge" height="35" alt="linkedin logo" />
