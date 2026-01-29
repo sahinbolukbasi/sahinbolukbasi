@@ -1,8 +1,7 @@
 <h2 align="center">Hi there, I'm Şahin BÖLÜKBAŞI 👋</h2>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/sahinbolukbasi/sahinbolukbasi/output/snake.svg" alt="Snake animation" width="8
-    1200" />
+  <img src="https://raw.githubusercontent.com/sahinbolukbasi/sahinbolukbasi/output/snake.svg" alt="Snake animation" width="1200" />
 </p>
 
 ### 👨‍💻 About Me
