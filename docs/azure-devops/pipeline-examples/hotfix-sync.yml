@@ -1,0 +1,299 @@
+# Hotfix Automatic Synchronization Pipeline
+# Bu pipeline, main branch'e merge edilen hotfix'leri otomatik olarak
+# release ve sandbox branch'lerine senkronize eder.
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - docs/*
+      - '*.md'
+
+pr: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - name: isHotfixMerge
+    value: false
+  - name: releaseBranch
+    value: ''
+
+stages:
+  - stage: DetectHotfix
+    displayName: 'Detect Hotfix Merge'
+    jobs:
+      - job: CheckCommit
+        displayName: 'Verify Hotfix Merge'
+        steps:
+          - checkout: self
+            fetchDepth: 10
+            persistCredentials: true
+          
+          - bash: |
+              echo "Checking if this is a hotfix merge..."
+              
+              # Get latest commit message
+              COMMIT_MSG=$(git log -1 --pretty=%B)
+              echo "Commit message: $COMMIT_MSG"
+              
+              # Check if commit message contains "hotfix"
+              if echo "$COMMIT_MSG" | grep -iq "hotfix"; then
+                echo "##[section]Hotfix merge detected from commit message"
+                echo "##vso[task.setvariable variable=isHotfixMerge;isOutput=true]true"
+                exit 0
+              fi
+              
+              # Check if this is a merge commit
+              if git log -1 --merges --pretty=%B &> /dev/null; then
+                MERGE_INFO=$(git log -1 --merges --pretty=%s)
+                echo "Merge info: $MERGE_INFO"
+                
+                # Extract source branch from merge commit
+                if echo "$MERGE_INFO" | grep -iq "hotfix"; then
+                  echo "##[section]Hotfix merge detected from merge info"
+                  echo "##vso[task.setvariable variable=isHotfixMerge;isOutput=true]true"
+                  exit 0
+                fi
+              fi
+              
+              # Check branch name in reflog
+              BRANCH_NAME=$(git reflog -1 | grep -oP 'from .*hotfix[^ ]*' | head -1)
+              if [ ! -z "$BRANCH_NAME" ]; then
+                echo "##[section]Hotfix merge detected from reflog: $BRANCH_NAME"
+                echo "##vso[task.setvariable variable=isHotfixMerge;isOutput=true]true"
+                exit 0
+              fi
+              
+              echo "##[warning]Not a hotfix merge, pipeline will stop"
+              echo "##vso[task.setvariable variable=isHotfixMerge;isOutput=true]false"
+            name: detectHotfix
+            displayName: 'Detect Hotfix Merge'
+
+  - stage: SyncToRelease
+    displayName: 'Sync to Release Branch'
+    dependsOn: DetectHotfix
+    condition: and(succeeded(), eq(dependencies.DetectHotfix.outputs['CheckCommit.detectHotfix.isHotfixMerge'], 'true'))
+    jobs:
+      - job: MergeToRelease
+        displayName: 'Merge Hotfix to Release'
+        steps:
+          - checkout: self
+            fetchDepth: 0
+            persistCredentials: true
+          
+          - bash: |
+              # Git configuration
+              git config --global user.email "azure-devops@automated.pipeline"
+              git config --global user.name "Azure DevOps Pipeline"
+              
+              echo "##[section]Finding active release branch..."
+              
+              # Get all release branches and find the latest
+              git fetch origin
+              RELEASE_BRANCH=$(git branch -r | grep 'origin/release/' | sed 's/.*origin\///' | sort -V | tail -1)
+              
+              if [ -z "$RELEASE_BRANCH" ]; then
+                echo "##[warning]No release branch found. Skipping release sync."
+                echo "##vso[task.setvariable variable=mergeStatus]skipped"
+                exit 0
+              fi
+              
+              echo "##[command]Active release branch: $RELEASE_BRANCH"
+              echo "##vso[task.setvariable variable=releaseBranch;isOutput=true]$RELEASE_BRANCH"
+              
+              # Checkout release branch
+              git checkout $RELEASE_BRANCH
+              git pull origin $RELEASE_BRANCH
+              
+              echo "##[section]Attempting to merge main into $RELEASE_BRANCH..."
+              
+              # Try to merge main
+              if git merge origin/main --no-edit -m "hotfix: auto-sync from main ($(Build.SourceVersion))"; then
+                echo "##[section]✅ Merge successful!"
+                
+                # Push changes
+                git push origin $RELEASE_BRANCH
+                echo "##[command]Changes pushed to $RELEASE_BRANCH"
+                
+                echo "##vso[task.setvariable variable=mergeStatus;isOutput=true]success"
+                echo "##vso[task.complete result=Succeeded;]Release branch sync completed successfully"
+              else
+                echo "##[error]❌ Merge conflict detected!"
+                echo "##vso[task.logissue type=warning]Automatic merge failed due to conflicts"
+                
+                # Abort merge
+                git merge --abort
+                
+                echo "##vso[task.setvariable variable=mergeStatus;isOutput=true]conflict"
+              fi
+            name: releaseMerge
+            displayName: 'Merge to Release Branch'
+          
+          - task: CreateWorkItem@1
+            displayName: 'Create Work Item for Conflict Resolution'
+            condition: eq(variables['mergeStatus'], 'conflict')
+            inputs:
+              workItemType: 'Task'
+              title: '[HOTFIX SYNC] Resolve merge conflict in $(releaseBranch)'
+              assignedTo: '$(Build.RequestedForEmail)'
+              areaPath: '$(System.TeamProject)'
+              iterationPath: '$(System.TeamProject)'
+              fieldMappings: |
+                Priority=1
+                Description=<div>
+                <p><strong>Hotfix automatic synchronization to release branch failed due to merge conflicts.</strong></p>
+                
+                <h3>Details:</h3>
+                <ul>
+                  <li>Hotfix Commit: <code>$(Build.SourceVersion)</code></li>
+                  <li>Target Branch: <code>$(releaseBranch)</code></li>
+                  <li>Build: <a href="$(Build.BuildUri)">$(Build.BuildNumber)</a></li>
+                </ul>
+                
+                <h3>Resolution Steps:</h3>
+                <ol>
+                  <li>Checkout release branch: <code>git checkout $(releaseBranch)</code></li>
+                  <li>Pull latest: <code>git pull origin $(releaseBranch)</code></li>
+                  <li>Merge main: <code>git merge origin/main</code></li>
+                  <li>Resolve conflicts manually</li>
+                  <li>Commit: <code>git commit -m "hotfix: resolve sync conflict"</code></li>
+                  <li>Push: <code>git push origin $(releaseBranch)</code></li>
+                </ol>
+                
+                <p><strong>Note:</strong> Ensure all hotfix changes are properly integrated.</p>
+                </div>
+
+  - stage: SyncToSandbox
+    displayName: 'Sync to Sandbox Branch'
+    dependsOn: 
+      - DetectHotfix
+      - SyncToRelease
+    condition: and(succeeded(), eq(dependencies.DetectHotfix.outputs['CheckCommit.detectHotfix.isHotfixMerge'], 'true'))
+    jobs:
+      - job: MergeToSandbox
+        displayName: 'Merge Hotfix to Sandbox'
+        steps:
+          - checkout: self
+            fetchDepth: 0
+            persistCredentials: true
+          
+          - bash: |
+              # Git configuration
+              git config --global user.email "azure-devops@automated.pipeline"
+              git config --global user.name "Azure DevOps Pipeline"
+              
+              echo "##[section]Syncing to sandbox branch..."
+              
+              # Checkout sandbox
+              git checkout sandbox
+              git pull origin sandbox
+              
+              echo "##[section]Attempting to merge main into sandbox..."
+              
+              # Try to merge main
+              if git merge origin/main --no-edit -m "hotfix: auto-sync from main ($(Build.SourceVersion))"; then
+                echo "##[section]✅ Merge successful!"
+                
+                # Push changes
+                git push origin sandbox
+                echo "##[command]Changes pushed to sandbox"
+                
+                echo "##vso[task.setvariable variable=mergeStatus;isOutput=true]success"
+                echo "##vso[task.complete result=Succeeded;]Sandbox branch sync completed successfully"
+              else
+                echo "##[error]❌ Merge conflict detected!"
+                echo "##vso[task.logissue type=warning]Automatic merge failed due to conflicts"
+                
+                # Abort merge
+                git merge --abort
+                
+                echo "##vso[task.setvariable variable=mergeStatus;isOutput=true]conflict"
+              fi
+            name: sandboxMerge
+            displayName: 'Merge to Sandbox Branch'
+          
+          - task: CreateWorkItem@1
+            displayName: 'Create Work Item for Conflict Resolution'
+            condition: eq(variables['mergeStatus'], 'conflict')
+            inputs:
+              workItemType: 'Task'
+              title: '[HOTFIX SYNC] Resolve merge conflict in sandbox'
+              assignedTo: '$(Build.RequestedForEmail)'
+              areaPath: '$(System.TeamProject)'
+              iterationPath: '$(System.TeamProject)'
+              fieldMappings: |
+                Priority=2
+                Description=<div>
+                <p><strong>Hotfix automatic synchronization to sandbox branch failed due to merge conflicts.</strong></p>
+                
+                <h3>Details:</h3>
+                <ul>
+                  <li>Hotfix Commit: <code>$(Build.SourceVersion)</code></li>
+                  <li>Target Branch: <code>sandbox</code></li>
+                  <li>Build: <a href="$(Build.BuildUri)">$(Build.BuildNumber)</a></li>
+                </ul>
+                
+                <h3>Resolution Steps:</h3>
+                <ol>
+                  <li>Checkout sandbox: <code>git checkout sandbox</code></li>
+                  <li>Pull latest: <code>git pull origin sandbox</code></li>
+                  <li>Merge main: <code>git merge origin/main</code></li>
+                  <li>Resolve conflicts manually</li>
+                  <li>Commit: <code>git commit -m "hotfix: resolve sync conflict"</code></li>
+                  <li>Push: <code>git push origin sandbox</code></li>
+                </ol>
+                
+                <p><strong>Note:</strong> Lower priority than release conflict, but should be resolved soon.</p>
+                </div>
+
+  - stage: Notification
+    displayName: 'Send Notifications'
+    dependsOn:
+      - DetectHotfix
+      - SyncToRelease
+      - SyncToSandbox
+    condition: eq(dependencies.DetectHotfix.outputs['CheckCommit.detectHotfix.isHotfixMerge'], 'true')
+    jobs:
+      - job: NotifyTeam
+        displayName: 'Send Sync Status Notification'
+        steps:
+          - bash: |
+              echo "##[section]Hotfix Sync Summary"
+              echo "Commit: $(Build.SourceVersion)"
+              echo "Triggered by: $(Build.RequestedFor)"
+              
+              # Get merge statuses from previous stages
+              RELEASE_STATUS="${RELEASE_MERGE_STATUS:-unknown}"
+              SANDBOX_STATUS="${SANDBOX_MERGE_STATUS:-unknown}"
+              
+              echo "Release sync: $RELEASE_STATUS"
+              echo "Sandbox sync: $SANDBOX_STATUS"
+              
+              # Determine overall status
+              if [[ "$RELEASE_STATUS" == "conflict" ]] || [[ "$SANDBOX_STATUS" == "conflict" ]]; then
+                echo "##[warning]⚠️ Manual intervention required for conflict resolution"
+                exit 0
+              elif [[ "$RELEASE_STATUS" == "success" ]] && [[ "$SANDBOX_STATUS" == "success" ]]; then
+                echo "##[section]✅ All syncs completed successfully"
+              fi
+            displayName: 'Generate Summary'
+          
+          # Optional: Send email notification
+          # Requires email service configuration
+          # - task: SendEmail@1
+          #   displayName: 'Send Email Notification'
+          #   inputs:
+          #     To: 'devops-team@company.com'
+          #     Subject: 'Hotfix Sync Status - $(Build.BuildNumber)'
+          #     Body: |
+          #       Hotfix synchronization completed.
+          #       
+          #       Commit: $(Build.SourceVersion)
+          #       Release: $(RELEASE_MERGE_STATUS)
+          #       Sandbox: $(SANDBOX_MERGE_STATUS)
+          #       
+          #       Build: $(Build.BuildUri)
