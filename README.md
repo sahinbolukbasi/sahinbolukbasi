@@ -65,15 +65,6 @@ I am a **DevOps Specialist & Software Engineer** with a strong background in **f
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=sahinbolukbasi&theme=dracula&area=true&hide_border=false" width="90%" alt="activity graph" />
 </div>
 
----
-
-### ✍️ Latest Content
-
-<div align="left">
-  <img src="https://github-read-medium-git-main.pahlevikun.vercel.app/latest?limit=4&username=@sahinbolukbasi&theme=codeSTACKr" alt="Medium posts" />
-</div>
-
----
 
 ### 🌐 Connect & Socials
 
