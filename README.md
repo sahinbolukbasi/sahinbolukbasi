@@ -6,21 +6,49 @@
 
 ### 👨‍💻 About Me
 
-I am a **Software Developer & DevOps Specialist** at **Pargesoft**, with a multi-disciplinary background in building enterprise-grade applications and automating complex infrastructures.
+I am a **DevOps Specialist & Software Engineer** with a strong background in **full-stack development** and a deep focus on **AI systems engineering**. I bridge the gap between software development and production operations, taking both traditional applications and modern AI systems from code to scalable, production-grade infrastructure.
 
-* 🚀 **Full-Stack .NET Development:** Expert in developing professional **Desktop (WPF/WinForms)** and **Web (ASP.NET Core MVC)** applications. I design and implement scalable **RESTful APIs** and maintain high-performance backend systems.
-* ⚙️ **DevOps & Cloud:** Specialized in **Azure DevOps**, architecting CI/CD pipelines for **Business Central (AL)**, and managing cloud infrastructure through Docker and containerization.
-* 🐍 **Python & AI Engineering:** Proficient **Python Developer** focusing on Artificial Intelligence. I build and integrate **Enterprise RAG (Retrieval-Augmented Generation)** systems and leverage **LLM architectures** to solve real-world business problems.
-* 🛠️ **Project Spotlight:** Currently scaling the **Bulut İK (Cloud HR)** project, ensuring high availability and seamless deployment.
+* 🚀 **DevOps & Cloud Infrastructure:** Architecting end-to-end **CI/CD pipelines** on **Azure DevOps** and **GitHub Actions**; managing scalable cloud infrastructure with **Kubernetes**, **Azure Container Apps**, and **Docker**. Building everything as **Infrastructure as Code (IaC)** for reproducibility and sustainability.
+
+* 🤖 **AI Systems & MLOps:** Deploying and scaling **AI Agent architectures**, **LLM-based applications**, and **RAG (Retrieval-Augmented Generation) systems** in production. Managing **vector databases**, embedding pipelines, and the full lifecycle of enterprise AI solutions.
+
+* ⚙️ **Production Operations:** Designing **API Management**, **Load Balancing**, and **observability** strategies (Azure Monitor, Application Insights) to ensure high availability, performance optimization, and long-term sustainability of mission-critical systems.
+
+* 💻 **Full-Stack .NET Development:** Experienced in building enterprise-grade **Desktop (WPF/WinForms)** and **Web (ASP.NET Core MVC)** applications, scalable **RESTful APIs**, and high-performance backend systems.
+
+* 🐍 **Python & Automation:** Proficient Python developer focused on AI integration, automation tooling, and operational scripting to streamline DevOps workflows.
+
 * ✍️ Sharing technical insights on [Medium](https://medium.com/@sahinbolukbasii).
 
 ---
 
 ### 🛠️ Tech Stack & Tools
 
+**DevOps & Cloud**
 <p align="left">
   <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=cs,dotnet,azure,docker,kubernetes,py,js,flask,postgresql,linux,git,github,vscode,selenium,raspberrypi&perline=8" />
+    <img src="https://skillicons.dev/icons?i=azure,kubernetes,docker,githubactions,bash,linux,terraform,nginx&perline=8" />
+  </a>
+</p>
+
+**Languages & Frameworks**
+<p align="left">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=cs,dotnet,py,js,flask,fastapi,html,css&perline=8" />
+  </a>
+</p>
+
+**AI / Data / Databases**
+<p align="left">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=postgresql,redis,mysql,mongodb,tensorflow,pytorch&perline=8" />
+  </a>
+</p>
+
+**Tools**
+<p align="left">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=git,github,vscode,visualstudio,postman,selenium,raspberrypi&perline=8" />
   </a>
 </p>
 
@@ -29,12 +57,18 @@ I am a **Software Developer & DevOps Specialist** at **Pargesoft**, with a multi
 ### 📊 GitHub Analysis & Stats
 
 <div align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=sahinbolukbasi&show_icons=true&theme=dracula&hide_border=false&include_all_commits=true&count_private=true" height="180" alt="stats graph" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=sahinbolukbasi&layout=compact&theme=dracula&hide_border=false" height="180" alt="languages graph" />
+</div>
+
+<div align="center">
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=sahinbolukbasi&theme=dracula&area=true&hide_border=false" width="90%" alt="activity graph" />
 </div>
 
 ---
 
 ### ✍️ Latest Content
+
 <div align="left">
   <img src="https://github-read-medium-git-main.pahlevikun.vercel.app/latest?limit=4&username=@sahinbolukbasi&theme=codeSTACKr" alt="Medium posts" />
 </div>
